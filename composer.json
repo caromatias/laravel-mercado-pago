@@ -1,5 +1,5 @@
 {
-  "name": "alexvergara/laravel-mercado-pago",
+  "name": "caromatias/laravel-mercado-pago",
   "description": "Paquete de Mercado Pago para Laravel usando >= PHP 8.2",
   "type": "library",
   "authors": [
