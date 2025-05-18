@@ -14,13 +14,14 @@
 ## Introducción
 
 Laravel mercado pago es un paquete que te ayuda a implementar el [sdk](https://github.com/mercadopago/sdk-php) de mercado pago para php en laravel.
+Fork de oscar-rey/laravel-mercado-pago para poder usarlo con la última versión de SDK (dx 3.0.0) y PHP 8.2
 
 ## 💻 Instalación
 
 Para instalar utiliza composer.
 
 ```.bash
-composer require oscar-rey/laravel-mercado-pago
+composer require caromatias/laravel-mercado-pago
 ```
 
 ## 🔧 Configuración
