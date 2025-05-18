@@ -1,53 +1,53 @@
 {
-    "name": "oscar-rey/laravel-mercado-pago",
-    "description": "Paquete de mercado pago para laravel.",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Oscar Rey",
-            "email": "oscarhumberto1311@gmail.com"
-        }
-    ],
-    "homepage": "https://github.com/oscar-rey-mosquera/laravel-mercado-pago",
-    "keywords": [
-        "Laravel",
-        "laravel-mercado-pago",
-        "pagos",
-        "mercado pago",
-        "paquete"
-    ],
-    "require": {
-        "php": ">=7.1.0",
-        "mercadopago/dx-php": "^2.4"
-    },
-    "require-dev": {
-        "orchestra/testbench": "^7.5"
-    },
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "LaravelMercadoPago\\": "src/"
-        },
-        "files": [
-            "src/Support/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-          "LaravelMercadoPago\\Tests\\": "tests"
-        }
-      },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "LaravelMercadoPago\\MercadoPagoServiceProvider"
-            ],
-            "aliases": {
-                "MercadoPago": "LaravelMercadoPago\\Facades\\MercadoPago"
-            }
-        }
-    },
-    "scripts": {
-        "test": "./vendor/bin/phpunit"
+  "name": "alexvergara/laravel-mercado-pago",
+  "description": "Paquete de Mercado Pago para Laravel usando >= PHP 8.2",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Matías Caro",
+      "email": ""
     }
+  ],
+  "homepage": "https://github.com/caromatias/laravel-mercado-pago",
+  "keywords": [
+    "Laravel",
+    "laravel-mercado-pago",
+    "pagos",
+    "mercado pago",
+    "paquete"
+  ],
+  "require": {
+    "php": ">=8.2",
+    "mercadopago/dx-php": "^3.0.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^7.5"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "LaravelMercadoPago\\": "src/"
+    },
+    "files": [
+      "src/Support/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "LaravelMercadoPago\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "LaravelMercadoPago\\MercadoPagoServiceProvider"
+      ],
+      "aliases": {
+        "MercadoPago": "LaravelMercadoPago\\Facades\\MercadoPago"
+      }
+    }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit"
+  }
 }
