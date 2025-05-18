@@ -3,7 +3,8 @@ namespace LaravelMercadoPago\Entity;
 
 use MercadoPago\SDK;
 use LaravelMercadoPago\Traits\EntityTrait;
-use MercadoPago\Payment as MercadoPagoPayment;
+//use MercadoPago\Payment as MercadoPagoPayment;
+use MercadoPago\Client\Payment\PaymentClient as MercadoPagoPayment;
 use LaravelMercadoPago\Interfaces\ClassToJson;
 
 
