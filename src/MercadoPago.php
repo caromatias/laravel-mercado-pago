@@ -2,10 +2,13 @@
 
 namespace LaravelMercadoPago;
 
+/*
 use MercadoPago\{
   SDK,
   InstoreOrder
 };
+*/
+use MercadoPago\MercadoPagoConfig;
 
 use LaravelMercadoPago\Traits\EntityTrait;
 
@@ -319,7 +322,8 @@ class MercadoPago
    */
   public function initSdk($access_token = null)
   {
-    SDK::setAccessToken($access_token ?? $this->getAccesToken());
+    //SDK::setAccessToken($access_token ?? $this->getAccesToken());
+    MercadoPagoConfig::setAccessToken($access_token ?? $this->getAccesToken());
   }
 
 
