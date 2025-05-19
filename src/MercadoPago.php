@@ -2,14 +2,9 @@
 
 namespace LaravelMercadoPago;
 
-/*
-use MercadoPago\{
-  SDK,
-  InstoreOrder
-};
-*/
 use MercadoPago\MercadoPagoConfig;
-
+use MercadoPago\Net\MPRestClient;
+use MercadoPago\Client\MercadoPagoClient;
 use LaravelMercadoPago\Traits\EntityTrait;
 
 use LaravelMercadoPago\Entity\{
@@ -38,7 +33,6 @@ use LaravelMercadoPago\Entity\{
 
 class MercadoPago
 {
-
   use EntityTrait;
 
   public function __construct()
@@ -51,7 +45,6 @@ class MercadoPago
    */
   public function hello()
   {
-
     return 'hello';
   }
 
@@ -61,7 +54,6 @@ class MercadoPago
    */
   public function payment()
   {
-
     return new Payment();
   }
 
@@ -71,7 +63,6 @@ class MercadoPago
    */
   public function store()
   {
-
     return new Store();
   }
 
@@ -81,40 +72,36 @@ class MercadoPago
    */
   public function authorizedPayment()
   {
-
     return new AuthorizedPayment();
   }
 
   /**
    * Instancia de InstoreOrder
-   * @return InstoreOrder
-   * @link https://github.com/mercadopago/sdk-php/blob/9ca999e06cc8a875a11f0fcf4dccc75b41d020d5/src/MercadoPago/Entities/InstoreOrder.php
+   * @return InstoreOrderV2
+   * @link https://www.mercadopago.com/developers/es/reference/qr-code/_instore_orders_qr_user_id/post
    */
   public function instoreOrder()
   {
-
-    return new InstoreOrder();
+    // En SDK v3 ya no existe InstoreOrder, usamos InstoreOrderV2
+    return new InstoreOrderV2();
   }
 
   /**
    * Instancia de InstoreOrderQr
    * @return InstoreOrderQr
-   * @link https://www.mercadopago.com.co/developers/es/reference/qr-dynamic/_instore_orders_qr_seller_collectors_user_id_pos_external_pos_id_qrs/post
+   * @link https://www.mercadopago.com/developers/es/reference/qr-dynamic/_instore_orders_qr_seller_collectors_user_id_pos_external_pos_id_qrs/post
    */
   public function instoreOrderQr()
   {
-
     return new InstoreOrderQr();
   }
 
   /**
    * Instancia de CardToken
    * @return CardToken
-   * @link https://github.com/mercadopago/sdk-php/blob/master/src/MercadoPago/Entities/CardToken.php
    */
   public function cardToken()
   {
-
     return new CardToken();
   }
 
@@ -124,21 +111,17 @@ class MercadoPago
    */
   public function instoreOrderV2()
   {
-
     return new InstoreOrderV2();
   }
 
-
-    /**
+  /**
    * Instancia de Issuer
    * @return Issuer
    */
   public function issuer()
   {
-
     return new Issuer();
   }
-
 
   /**
    * Instancia de MerchantOrder
@@ -146,7 +129,6 @@ class MercadoPago
    */
   public function merchantOrder()
   {
-
     return new MerchantOrder();
   }
 
@@ -156,7 +138,6 @@ class MercadoPago
    */
   public function paymentMethod()
   {
-
     return new PaymentMethod();
   }
 
@@ -166,7 +147,6 @@ class MercadoPago
    */
   public function pos()
   {
-
     return new POS();
   }
 
@@ -176,7 +156,6 @@ class MercadoPago
    */
   public function identificationType()
   {
-
     return new IdentificationType();
   }
 
@@ -216,7 +195,6 @@ class MercadoPago
     return new Card();
   }
 
-
   /**
    * Instancia de Plan
    * @return Plan
@@ -235,11 +213,9 @@ class MercadoPago
     return new OAuth();
   }
 
-
   /**
    * Instancia de Preapproval
    * @return Preapproval
-   * @link https://github.com/mercadopago/sdk-php/blob/9ca999e06cc8a875a11f0fcf4dccc75b41d020d5/src/MercadoPago/Entities/Preapproval.php
    */
   public function preapproval()
   {
@@ -279,9 +255,10 @@ class MercadoPago
    */
   public function getCountryId()
   {
-    return SDK::getCountryId();
+    // En SDK v3 no existe getCountryId, podríamos implementar un método personalizado
+    // basado en el token o usar una configuración
+    return config('mercado-pago.country_id', 'MCO');
   }
-
 
   /**
    *  Crear suscripción
@@ -308,9 +285,7 @@ class MercadoPago
   public function createPlan($description, $back_url = null)
   {
     $plan = $this->plan();
-
     $plan->reason = $description;
-
     $plan->back_url = $back_url ?? $this->getCallbackUrl();
 
     return $plan;
@@ -322,10 +297,8 @@ class MercadoPago
    */
   public function initSdk($access_token = null)
   {
-    //SDK::setAccessToken($access_token ?? $this->getAccesToken());
     MercadoPagoConfig::setAccessToken($access_token ?? $this->getAccesToken());
   }
-
 
   /**
    * crear usuarios para hacer test
@@ -334,12 +307,42 @@ class MercadoPago
    */
   public function createTestUser($site_id = 'MCO')
   {
-    $response = SDK::post('/users/test_user', $this->bodyHttp(
-      [
-        'site_id' => $site_id
-      ]
-    ));
+    // En SDK v3 usamos el cliente HTTP directamente
+    $client = new MercadoPagoClient();
+    $response = $client->send('POST', '/users/test_user', [
+      'site_id' => $site_id
+    ]);
 
     return $response;
+  }
+
+  /**
+   * Obtiene el token de acceso desde la configuración
+   * @return string
+   */
+  protected function getAccesToken()
+  {
+    return config('mercado-pago.access_token');
+  }
+
+  /**
+   * Obtiene la URL de callback desde la configuración
+   * @return string
+   */
+  protected function getCallbackUrl()
+  {
+    return config('mercado-pago.callback_url');
+  }
+
+  /**
+   * Prepara los datos para las peticiones HTTP
+   * @param array $data
+   * @return array
+   */
+  protected function bodyHttp($data)
+  {
+    return [
+      'json_data' => $data
+    ];
   }
 }
